@@ -656,8 +656,8 @@ class LaVisionVC7Reader(PIVReader):
         mask_bad = np.logical_not(data.masks[plane] & data.enabled[plane])
         u = u.astype(float); v = v.astype(float)
         u[mask_bad] = 0.0; v[mask_bad] = 0.0
-        u = data.scales.i.offset + u * data.scales.i.slope
-        v = data.scales.i.offset + v * data.scales.i.slope
+        u = (data.scales.i.offset + u * data.scales.i.slope) * np.sign(data.scales.x.slope)
+        v = (data.scales.i.offset + v * data.scales.i.slope) * np.sign(data.scales.y.slope)
         x = np.arange(u.shape[1]); y = np.arange(u.shape[0])
         x = data.scales.x.offset + (x + 0.5) * data.scales.x.slope * data.grid.x
         y = data.scales.y.offset + (y + 0.5) * data.scales.y.slope * data.grid.y
